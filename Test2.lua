@@ -1,1 +1,1 @@
-"1.4"
+getgenv().CurrentVersion = "1.4"
