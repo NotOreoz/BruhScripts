@@ -1,14 +1,7 @@
-local function getexploit()
-local exploit =
-(syn and not is_sirhurt_closure and not pebc_execute and "Synapse") or
-(KRNL_LOADED and "Krnl") or
-("Unsupported")
-return exploit
-end
-local Exploit = getexploit()
+local Exploit = (syn and not is_sirhurt_closure and not pebc_execute and "Synapse") or ("Unsupported")
 
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
-local Window = OrionLib:MakeWindow({Name = "Shadovis RPG | BruhSoundEffect#2081 | V2 ", HidePremium = false, IntroEnabled = false})
+local Window = OrionLib:MakeWindow({Name = "Shadovis RPG | V2.1 ", HidePremium = false, IntroEnabled = false})
 local KillAuraTab = Window:MakeTab({Name = "Kill Aura",Icon = "rbxassetid://",PremiumOnly = false})
 local AutoFarmTab = Window:MakeTab({Name = "Auto Farm",Icon = "rbxassetid://",PremiumOnly = false})
 local PlrTab = Window:MakeTab({Name = "Local Player",Icon = "rbxassetid://",PremiumOnly = false})
