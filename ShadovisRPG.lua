@@ -109,7 +109,7 @@ AutoFarmTab:AddToggle({Name = "Auto Farm Toggle",Default = false,Callback = func
         wait()
     end
     KAToggle:Set(false)
-			game.Players.LocalPlayer.Character.Humanoid:ChangeState(7)
+	game.Players.LocalPlayer.Character.Humanoid:ChangeState(7)
 end})
 
 AutoFarmTab:AddToggle({Name = "Below?",Default = false,Callback = function(Value)
