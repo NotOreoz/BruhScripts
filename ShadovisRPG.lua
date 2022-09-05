@@ -1,7 +1,14 @@
-local Exploit = (syn and not is_sirhurt_closure and not pebc_execute and "Synapse") or ("Unsupported")
+local function getexploit()
+local exploit =
+(syn and not is_sirhurt_closure and not pebc_execute and "Synapse") or
+(KRNL_LOADED and "Krnl") or
+("Unsupported")
+return exploit
+end
+local Exploit = getexploit()
 
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
-local Window = OrionLib:MakeWindow({Name = "Shadovis RPG | V2.1 ", HidePremium = false, IntroEnabled = false})
+local Window = OrionLib:MakeWindow({Name = "Shadovis RPG | BruhSoundEffect#2081 ", HidePremium = false, IntroEnabled = false})
 local KillAuraTab = Window:MakeTab({Name = "Kill Aura",Icon = "rbxassetid://",PremiumOnly = false})
 local AutoFarmTab = Window:MakeTab({Name = "Auto Farm",Icon = "rbxassetid://",PremiumOnly = false})
 local PlrTab = Window:MakeTab({Name = "Local Player",Icon = "rbxassetid://",PremiumOnly = false})
@@ -9,6 +16,7 @@ local ItemTab = Window:MakeTab({Name = "Grab Items",Icon = "rbxassetid://",Premi
 local OtherTab = Window:MakeTab({Name = "Other/Utility",Icon = "rbxassetid://",PremiumOnly = false})
 local PlatformTab = Window:MakeTab({Name = "Platform",Icon = "rbxassetid://",PremiumOnly = false})
 local TPTab = Window:MakeTab({Name = "TP Tab",Icon = "rbxassetid://",PremiumOnly = false})
+local dctab = Window:MakeTab({Name = "Discord",Icon = "rbxassetid://",PremiumOnly = false})
 local Cont = game:GetService("Players").LocalPlayer.PlayerGui.Interface.Container
 
 getgenv().KillAura_BRUH = false
@@ -109,7 +117,6 @@ AutoFarmTab:AddToggle({Name = "Auto Farm Toggle",Default = false,Callback = func
         wait()
     end
     KAToggle:Set(false)
-	game.Players.LocalPlayer.Character.Humanoid:ChangeState(7)
 end})
 
 AutoFarmTab:AddToggle({Name = "Below?",Default = false,Callback = function(Value)
@@ -188,7 +195,7 @@ ItemTab:AddSlider({Name = "Nearby Range",Min = 5,Max = 500,Default = 35,Color = 
     AutoPickupItemsNearbyRange_BRUH = Value
 end})
 
-local ShopNames = {"Armor Shop","Beginners Shop","General Store","Epic Store","Cavern Store","Legendary Store","Sky Store","Depths Store"}
+local ShopNames = {"Armor Shop","Beginners Shop","General Store","Epic Store","Cavern Store","Legendary Store","Sky Store","Depths Store","Dragon"}
 for _,v in pairs(game:GetService("Workspace").Stores:GetChildren()) do 
     v.Name = ShopNames[_]
 end
@@ -512,6 +519,17 @@ TPTab:AddButton({Name = "Kronos",Callback = function()
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-5241.43115, 1688.99963, 4477.37549, -0.0270850305, -0, -0.999633133, -0, 1, -0, 0.999633133, 0, -0.0270)
 end})
 
+dctab:AddParagraph("bruh","i do have a discord server now, you can suggest things there, or ask questions | https://discord.gg/pkceG2fkdm | BruhSoundEffect#2081")
+dctab:AddButton({Name = "copy discord",Callback = function()
+    setclipboard("https://discord.gg/pkceG2fkdm | BruhSoundEffect#2081")
+end})
+
+OrionLib:MakeNotification({
+	Name = "BruhSoundEffect#2081",
+	Content = "https://discord.gg/pkceG2fkdm For Updates/Other",
+	Image = "rbxassetid://",
+	Time = 30
+})
 if Exploit == "Unsupported" then 
     OrionLib:MakeNotification({
     	Name = "Read Me!",
