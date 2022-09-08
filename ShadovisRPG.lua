@@ -554,6 +554,14 @@ game:GetService("RunService").RenderStepped:Connect(function(step)
     game.Players.LocalPlayer.Character.Humanoid:ChangeState(18)
 end)
 
+ChangeTab:AddParagraph("V2.5.1",[[
+    +Fixed not being able to fly after autofarm
+    
+    +Fixed Shop Opener (like 3 versions ago lol)
+    
+    NotOreoz (V3rm)
+    ]])
+
 ChangeTab:AddParagraph("V2.5",[[
     +Fixed Chestplate Pickup (Grab Items)
     +Added Option to Follow Targets (Auto Farm)
