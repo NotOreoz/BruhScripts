@@ -8,15 +8,14 @@ end
 local Exploit = getexploit()
 
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
-local Window = OrionLib:MakeWindow({Name = "Shadovis RPG | BruhSoundEffect#2081 ", HidePremium = false, IntroEnabled = false})
+local Window = OrionLib:MakeWindow({Name = "Shadovis RPG | NotOreoz (V3rm) ", HidePremium = false, IntroEnabled = false})
 local KillAuraTab = Window:MakeTab({Name = "Kill Aura",Icon = "rbxassetid://",PremiumOnly = false})
 local AutoFarmTab = Window:MakeTab({Name = "Auto Farm",Icon = "rbxassetid://",PremiumOnly = false})
 local PlrTab = Window:MakeTab({Name = "Local Player",Icon = "rbxassetid://",PremiumOnly = false})
 local ItemTab = Window:MakeTab({Name = "Grab Items",Icon = "rbxassetid://",PremiumOnly = false})
 local OtherTab = Window:MakeTab({Name = "Other/Utility",Icon = "rbxassetid://",PremiumOnly = false})
 local PlatformTab = Window:MakeTab({Name = "Platform",Icon = "rbxassetid://",PremiumOnly = false})
-local TPTab = Window:MakeTab({Name = "TP Tab",Icon = "rbxassetid://",PremiumOnly = false})
-local dctab = Window:MakeTab({Name = "Discord",Icon = "rbxassetid://",PremiumOnly = false})
+local ChangeTab = Window:MakeTab({Name = "Changelog",Icon = "rbxassetid://",PremiumOnly = false})
 local Cont = game:GetService("Players").LocalPlayer.PlayerGui.Interface.Container
 
 getgenv().KillAura_BRUH = false
@@ -38,6 +37,7 @@ getgenv().AutoFarmMaster_BRUH = false
 getgenv().AutoFarmDistance_BRUH = -5
 getgenv().AboveOrBelow_BRUH = false
 getgenv().AutoFarmKillAura_BRUH = false
+getgenv().AutoFarmStayStill_BRUH = false
 
 PlrTab:AddSlider({Name = "Walkspeed",Min = 0,Max = 250,Default = 16,Color = Color3.fromRGB(255,255,255),Increment = 1,ValueName = "",Callback = function(Value)
     game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Value
@@ -123,6 +123,11 @@ AutoFarmTab:AddToggle({Name = "Below?",Default = false,Callback = function(Value
     AboveOrBelow_BRUH = not Value
 end})
 
+AutoFarmTab:AddToggle({Name = "Follow Target (Risky)",Default = false,Callback = function(Value)
+    AutoFarmStayStill_BRUH = not Value
+end})
+
+local NPCT = nil
 local AutoFarm_DROPDOWN = AutoFarmTab:AddDropdown({Name = "Select NPC", Default = "None", Options = NPCTable, Callback = function(Value)
     if Value == "None" then 
     else
@@ -130,6 +135,7 @@ local AutoFarm_DROPDOWN = AutoFarmTab:AddDropdown({Name = "Select NPC", Default 
         for _,v in pairs(game.Workspace.NPCs:GetChildren()) do 
             if v.Name == Value then 
                 NPCHRP = v.HumanoidRootPart.CFrame
+                NPCT = v.Name
             end
         end
         if NPCHRP == nil then 
@@ -500,33 +506,9 @@ KillAuraTab:AddSlider({Name = "TP Delay",Min = 0,Max = 5,Default = 0.5,Color = C
     KillAuraAddonTPDelay_BRUH = Value
 end})
 
-local OldPos2 = nil
-TPTab:AddDropdown({Name = "XP Goblins", Default = "None", Options = {"Go Back","None","Lv 99","Lv 999","Lv 9999"}, Callback = function(Value)
-    if Value == "None" then 
-    elseif Value == "Go Back" then 
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = OldPos2
-    else
-        OldPos2 = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
-        for _,v in pairs(game:GetService("Workspace").NPCs:GetChildren()) do
-            if v.Name == "XP Goblin "..Value then 
-                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame
-            end
-        end
-    end
-end})
-
-TPTab:AddButton({Name = "Kronos",Callback = function()
-    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-5241.43115, 1688.99963, 4477.37549, -0.0270850305, -0, -0.999633133, -0, 1, -0, 0.999633133, 0, -0.0270)
-end})
-
-dctab:AddParagraph("bruh","i do have a discord server now, you can suggest things there, or ask questions | https://discord.gg/pkceG2fkdm | BruhSoundEffect#2081")
-dctab:AddButton({Name = "copy discord",Callback = function()
-    setclipboard("https://discord.gg/pkceG2fkdm | BruhSoundEffect#2081")
-end})
-
 OrionLib:MakeNotification({
-	Name = "BruhSoundEffect#2081",
-	Content = "https://discord.gg/pkceG2fkdm For Updates/Other",
+	Name = "NotOreoz (v3rm)",
+	Content = ":) No Discord, DM on V3rm",
 	Image = "rbxassetid://",
 	Time = 30
 })
@@ -537,21 +519,12 @@ if Exploit == "Unsupported" then
     	Image = "rbxassetid://",
     	Time = 30
     })
-else
-    OrionLib:MakeNotification({
-    	Name = Exploit.." Detected",
-    	Content = "Enjoy!",
-    	Image = "rbxassetid://",
-    	Time = 30
-    })
 end
 
 for _,v in pairs(game.Workspace:GetChildren()) do if string.find(v.Name,"BRUH_SOUND_EFFECT2_") then v:Destroy() end end
 local BruhFolder2 = Instance.new("Folder")
 BruhFolder2.Parent = game.Workspace
 BruhFolder2.Name = "BRUH_SOUND_EFFECT2_"..math.random(500,15000)
-
-OrionLib:Init()
 
 local vu = game:GetService("VirtualUser")
 game:GetService("Players").LocalPlayer.Idled:connect(function()
@@ -561,13 +534,34 @@ game:GetService("Players").LocalPlayer.Idled:connect(function()
 end)
 
 game:GetService("RunService").RenderStepped:Connect(function(step)
-    if AutoFarmMaster_BRUH and NPCHRP ~= nil then
+    if AutoFarmMaster_BRUH and NPCHRP ~= nil and NPCT ~= nil then
+        if not AutoFarmStayStill_BRUH then
+            for _,v in pairs(game.Workspace.NPCs:GetChildren()) do 
+                if string.find(v.Name,NPCT) then 
+                    NPCHRP = v.HumanoidRootPart.CFrame
+                end
+            end
+        end
         game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0,0,0)
         game.Players.LocalPlayer.Character.Humanoid:ChangeState(11)
         if AboveOrBelow_BRUH then
+            repeat task.wait() until game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = NPCHRP * CFrame.new(0,AutoFarmDistance_BRUH,0)
         else
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = NPCHRP * CFrame.new(0,tonumber("-"..AutoFarmDistance_BRUH),0)
         end
     end
+    game.Players.LocalPlayer.Character.Humanoid:ChangeState(18)
 end)
+
+ChangeTab:AddParagraph("V2.5",[[
+    +Fixed Chestplate Pickup (Grab Items)
+    +Added Option to Follow Targets (Auto Farm)
+    
+    -Removed TP Tab 
+    -Removed Discord Tab
+    
+    NotOreoz (V3rm)
+    ]])
+
+OrionLib:Init()
