@@ -162,7 +162,7 @@ ItemTab:AddToggle({Name = "Auto Pickup ALL Items",Default = false,Callback = fun
     while AutoPickupItems_BRUH do 
         wait()
         for _,v in pairs(game.Workspace.Projectiles:GetChildren()) do 
-            if v:IsA("Part") and v:FindFirstChild("ProximityPrompt") and v.Name ~= "Part" then 
+            if v:IsA("UnionOperation") and v:FindFirstChild("ProximityPrompt") and v.Name ~= "Part" or v:IsA("Part") and v:FindFirstChild("ProximityPrompt") and v.Name ~= "Part" then 
                 pcall(function()
                     v.CanCollide = false
                     v.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
@@ -178,7 +178,7 @@ ItemTab:AddToggle({Name = "Auto Pickup NEARBY Items",Default = false,Callback = 
     while AutoPickupItemsNearby_BRUH do 
         wait()
         for _,v in pairs(game.Workspace.Projectiles:GetChildren()) do 
-            if v:IsA("Part") and v:FindFirstChild("ProximityPrompt") and v.Name ~= "Part" then 
+            if v:IsA("UnionOperation") and v:FindFirstChild("ProximityPrompt") and v.Name ~= "Part" or v:IsA("Part") and v:FindFirstChild("ProximityPrompt") and v.Name ~= "Part" then 
                 if (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.Position).magnitude < AutoPickupItemsNearbyRange_BRUH then 
                     pcall(function()
                         v.CanCollide = false
