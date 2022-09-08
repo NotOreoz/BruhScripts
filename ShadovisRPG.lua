@@ -11,6 +11,10 @@ local ItemTab = Window:MakeTab({Name = "Grab Items",Icon = "rbxassetid://",Premi
 local OtherTab = Window:MakeTab({Name = "Other/Utility",Icon = "rbxassetid://",PremiumOnly = false})
 local PlatformTab = Window:MakeTab({Name = "Platform",Icon = "rbxassetid://",PremiumOnly = false})
 local Cont = game:GetService("Players").LocalPlayer.PlayerGui.Interface.Container
+local NPCTable = {}
+local ThrowAwayTable = {}
+local Nums1 = {"K","M","B","T","Qd"}
+local Nums2 = {"000","000000","000000000","000000000000","000000000000000"}
 
 getgenv().KillAura_BRUH = false
 getgenv().KillAuraRange_BRUH = 25
@@ -139,6 +143,29 @@ local AutoFarm_DROPDOWN = AutoFarmTab:AddDropdown({Name = "Select NPC", Default 
             NPCHRP = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
         end
     end
+end})
+
+AutoFarmTab:AddButton({Name = "Refresh NPC List",Callback = function()
+    NPCTable = {}
+    for _,v in pairs(game:GetService("Workspace").NPCs:GetChildren()) do
+        if v:IsA("Model") and v:FindFirstChild("HumanoidRootPart") then
+            local Split1 = string.split(tostring(v),"Lv")
+            local TempName = "DM NotOreoz On V3rm (Bug)"
+            for _1,v1 in next, Nums1 do 
+                if string.find(tostring(Split1[#Split1]),v1) then
+                    if not string.find(tostring(v.Name),"000") then
+                        TempName = Split1[1]..string.gsub(Split1[#Split1],v1,"")..Nums2[_1]
+                        v.Name = TempName
+                    end
+                end
+            end
+            table.insert(NPCTable, v.Name)
+        end
+    end
+    table.sort(NPCTable, function(a, s)
+        return tonumber(string.match(a, "%d+")) < tonumber(string.match(s, "%d+"))
+    end)
+    AutoFarm_DROPDOWN:Refresh(NPCTable,true)
 end})
 
 AutoFarmTab:AddSlider({Name = "Distance",Min = 1,Max = 25,Default = 5,Color = Color3.fromRGB(255,255,255),Increment = 1,ValueName = "",Callback = function(Value)
@@ -545,14 +572,21 @@ end)
 
 ChangeTab:AddParagraph("ReadMe","If you need to report a bug, request something or give feedback dm me on V3rm ONLY. -NotOreoz (V3rm)")
 
+ChangeTab:AddParagraph("V2.6.1",[[
+    +Removed Auto Refresh (Button Now)
+    ; i forgot orion was dogshit
+    and cant handle big tables
+    my bad :>
+    
+    NotOreoz (V3rm)
+    ]])
+
 ChangeTab:AddParagraph("V2.6",[[
     +Select Target (Auto Farm),
     changes K,M,B,T,Qd to their
     correct numbers
     ; Enemies Only 
     ; Other things break the game
-    
-    +Fixed Error Spam (Auto Farm)
     
     +Removed Select Target (Auto Farm)
     ; Automatic, every 5 seconds it reloads
@@ -589,35 +623,3 @@ ChangeTab:AddParagraph("V2.5",[[
     ]])
 
 OrionLib:Init()
-
-local NPCTable = {}
-local ThrowAwayTable = {}
-local Nums1 = {"K","M","B","T","Qd"}
-local Nums2 = {"000","000000","000000000","000000000000","000000000000000"}
-spawn(function()
-    wait(3)
-    --while wait(5) do 
-        NPCTable = {}
-        for _,v in pairs(game:GetService("Workspace").NPCs:GetChildren()) do
-            if v:IsA("Model") and v:FindFirstChild("HumanoidRootPart") then
-                local Split1 = string.split(tostring(v),"Lv")
-                local TempName = "DM NotOreoz On V3rm (Bug)"
-                for _1,v1 in next, Nums1 do 
-                    if string.find(tostring(Split1[#Split1]),v1) then
-                        if not string.find(tostring(v.Name),"000") then
-                            TempName = Split1[1]..string.gsub(Split1[#Split1],v1,"")..Nums2[_1]
-                            v.Name = TempName
-                        end
-                    end
-                end
-                table.insert(NPCTable, v.Name)
-            end
-        end
-        table.sort(NPCTable, function(a, s)
-            return tonumber(string.match(a, "%d+")) < tonumber(string.match(s, "%d+"))
-        end)
-        ThrowAwayTable = NPCTable
-        NPCTable = {}
-        AutoFarm_DROPDOWN:Refresh(ThrowAwayTable,true)
-    --end
-end)
