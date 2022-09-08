@@ -1,21 +1,15 @@
-local function getexploit()
-local exploit =
-(syn and not is_sirhurt_closure and not pebc_execute and "Synapse") or
-(KRNL_LOADED and "Krnl") or
-("Unsupported")
-return exploit
-end
+local function getexploit() local exploit = (syn and not is_sirhurt_closure and not pebc_execute and "Synapse") or (KRNL_LOADED and "Krnl") or ("Unsupported") return exploit end
 local Exploit = getexploit()
 
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 local Window = OrionLib:MakeWindow({Name = "Shadovis RPG | NotOreoz (V3rm) ", HidePremium = false, IntroEnabled = false})
+local ChangeTab = Window:MakeTab({Name = "Changelog",Icon = "rbxassetid://",PremiumOnly = false})
 local KillAuraTab = Window:MakeTab({Name = "Kill Aura",Icon = "rbxassetid://",PremiumOnly = false})
 local AutoFarmTab = Window:MakeTab({Name = "Auto Farm",Icon = "rbxassetid://",PremiumOnly = false})
 local PlrTab = Window:MakeTab({Name = "Local Player",Icon = "rbxassetid://",PremiumOnly = false})
 local ItemTab = Window:MakeTab({Name = "Grab Items",Icon = "rbxassetid://",PremiumOnly = false})
 local OtherTab = Window:MakeTab({Name = "Other/Utility",Icon = "rbxassetid://",PremiumOnly = false})
 local PlatformTab = Window:MakeTab({Name = "Platform",Icon = "rbxassetid://",PremiumOnly = false})
-local ChangeTab = Window:MakeTab({Name = "Changelog",Icon = "rbxassetid://",PremiumOnly = false})
 local Cont = game:GetService("Players").LocalPlayer.PlayerGui.Interface.Container
 
 getgenv().KillAura_BRUH = false
@@ -117,13 +111,16 @@ AutoFarmTab:AddToggle({Name = "Auto Farm Toggle",Default = false,Callback = func
         wait()
     end
     KAToggle:Set(false)
+    game.Players.LocalPlayer.Character.Humanoid:ChangeState(18)
+    wait(0.1)
+    game.Players.LocalPlayer.Character.Humanoid:ChangeState(3)
 end})
 
 AutoFarmTab:AddToggle({Name = "Below?",Default = false,Callback = function(Value)
     AboveOrBelow_BRUH = not Value
 end})
 
-AutoFarmTab:AddToggle({Name = "Follow Target (Risky)",Default = false,Callback = function(Value)
+AutoFarmTab:AddToggle({Name = "Follow Target(s)",Default = false,Callback = function(Value)
     AutoFarmStayStill_BRUH = not Value
 end})
 
@@ -219,7 +216,6 @@ OtherTab:AddDropdown({Name = "Shop Opener", Default = "None", Options = ShopName
             end
         end
         if ShopTouchInt == nil then 
-            print("Couldnt Find Shop.")
             ShopTouchInt = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
         end
         OldPos1 = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
@@ -231,7 +227,8 @@ end})
 
 OtherTab:AddButton({Name = "Get World Cubits",Callback = function()
     for _,v in pairs(game.Workspace["Client Cubits"]:GetDescendants()) do
-        if v:IsA("MeshPart") and v:FindFirstChildWhichIsA("ProximityPrompt") then 
+        if v:IsA("MeshPart") and v:FindFirstChildWhichIsA("ProximityPrompt") then
+            wait()
             fireproximityprompt(v:FindFirstChildWhichIsA("ProximityPrompt"))
         end
     end
@@ -551,8 +548,18 @@ game:GetService("RunService").RenderStepped:Connect(function(step)
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = NPCHRP * CFrame.new(0,tonumber("-"..AutoFarmDistance_BRUH),0)
         end
     end
-    game.Players.LocalPlayer.Character.Humanoid:ChangeState(18)
 end)
+
+ChangeTab:AddParagraph("ReadMe","If you need to report a bug, request something or give feedback dm me on V3rm ONLY. -NotOreoz (V3rm)")
+
+ChangeTab:AddParagraph("V2.5.2",[[
+    +Fixed not being able to jump after autofarm
+    
+    Note: AutoFarm Follow Target works on enemies with the
+    same name, which lets you multi-target 
+    (Might add multi-target soon)
+    NotOreoz (V3rm)
+    ]])
 
 ChangeTab:AddParagraph("V2.5.1",[[
     +Fixed not being able to fly after autofarm
