@@ -552,6 +552,8 @@ ChangeTab:AddParagraph("V2.6",[[
     ; Enemies Only 
     ; Other things break the game
     
+    +Fixed Error Spam (Auto Farm)
+    
     +Removed Select Target (Auto Farm)
     ; Automatic, every 5 seconds it reloads
     
