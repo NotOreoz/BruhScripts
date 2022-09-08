@@ -596,7 +596,7 @@ local Nums1 = {"K","M","B","T","Qd"}
 local Nums2 = {"000","000000","000000000","000000000000","000000000000000"}
 spawn(function()
     wait(3)
-    while wait(5) do 
+    --while wait(5) do 
         NPCTable = {}
         for _,v in pairs(game:GetService("Workspace").NPCs:GetChildren()) do
             if v:IsA("Model") and v:FindFirstChild("HumanoidRootPart") then
@@ -619,5 +619,5 @@ spawn(function()
         ThrowAwayTable = NPCTable
         NPCTable = {}
         AutoFarm_DROPDOWN:Refresh(ThrowAwayTable,true)
-    end
+    --end
 end)
