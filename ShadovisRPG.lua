@@ -141,21 +141,6 @@ local AutoFarm_DROPDOWN = AutoFarmTab:AddDropdown({Name = "Select NPC", Default 
     end
 end})
 
---not made by me, im just too lazy to learn table.sort
-AutoFarmTab:AddButton({Name = "Refresh NPC List",Callback = function()
-    local NPCTable = {}
-    for i,v in pairs(game:GetService("Workspace").NPCs:GetChildren()) do
-        if v:IsA("Model") and v:FindFirstChild("HumanoidRootPart") and not table.find(NPCTable, v.Name) then
-            table.insert(NPCTable, v.Name)
-        end
-    end
-    table.sort(NPCTable, function(a, s)
-        return tonumber(string.match(a, "%d+")) < tonumber(string.match(s, "%d+"))
-    end)
-    AutoFarm_DROPDOWN:Refresh(NPCTable,true)
-end})
---not made by me, im just too lazy to learn table.sort
-
 AutoFarmTab:AddSlider({Name = "Distance",Min = 1,Max = 25,Default = 5,Color = Color3.fromRGB(255,255,255),Increment = 1,ValueName = "",Callback = function(Value)
     AutoFarmDistance_BRUH = Value
 end})
@@ -433,6 +418,12 @@ OtherTab:AddSlider({Name = "Text Transparency (For Above)",Min = 0,Max = 0.9,Def
     TextTransparency1_BRUH = Value
 end})
 
+OtherTab:AddToggle({Name = "Old Numbers (Enemy HP)",Default = false,Callback = function(Value)
+    if Value then
+        
+    end
+end})
+
 PlatformTab:AddParagraph("Platform Info","this will create a platform. wow. useful for going above enemies or groups and using killaura (thats how im gonna use it lol)")
 
 PlatformTab:AddButton({Name = "Create Platform",Callback = function()
@@ -534,15 +525,17 @@ game:GetService("RunService").RenderStepped:Connect(function(step)
     if AutoFarmMaster_BRUH and NPCHRP ~= nil and NPCT ~= nil then
         if not AutoFarmStayStill_BRUH then
             for _,v in pairs(game.Workspace.NPCs:GetChildren()) do 
-                if string.find(v.Name,NPCT) then 
+                if string.find(v.Name,NPCT) and v:FindFirstChild("HumanoidRootPart") then 
                     NPCHRP = v.HumanoidRootPart.CFrame
+                else
+                    NPCHRP = NPCHRP
                 end
             end
         end
         game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0,0,0)
         game.Players.LocalPlayer.Character.Humanoid:ChangeState(11)
+        repeat task.wait() until game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
         if AboveOrBelow_BRUH then
-            repeat task.wait() until game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = NPCHRP * CFrame.new(0,AutoFarmDistance_BRUH,0)
         else
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = NPCHRP * CFrame.new(0,tonumber("-"..AutoFarmDistance_BRUH),0)
@@ -552,10 +545,24 @@ end)
 
 ChangeTab:AddParagraph("ReadMe","If you need to report a bug, request something or give feedback dm me on V3rm ONLY. -NotOreoz (V3rm)")
 
+ChangeTab:AddParagraph("V2.6",[[
+    +Select Target (Auto Farm),
+    changes K,M,B,T,Qd to their
+    correct numbers
+    ; Enemies Only 
+    ; Other things break the game
+    
+    +Removed Select Target (Auto Farm)
+    ; Automatic, every 5 seconds it reloads
+    
+    NotOreoz (V3rm)
+    ]])
+
+
 ChangeTab:AddParagraph("V2.5.2",[[
     +Fixed not being able to jump after autofarm
     
-    Note: AutoFarm Follow Target works on enemies with the
+    ; AutoFarm Follow Target works on enemies with the
     same name, which lets you multi-target 
     (Might add multi-target soon)
     NotOreoz (V3rm)
@@ -580,3 +587,35 @@ ChangeTab:AddParagraph("V2.5",[[
     ]])
 
 OrionLib:Init()
+
+local NPCTable = {}
+local ThrowAwayTable = {}
+local Nums1 = {"K","M","B","T","Qd"}
+local Nums2 = {"000","000000","000000000","000000000000","000000000000000"}
+spawn(function()
+    wait(3)
+    while wait(5) do 
+        NPCTable = {}
+        for _,v in pairs(game:GetService("Workspace").NPCs:GetChildren()) do
+            if v:IsA("Model") and v:FindFirstChild("HumanoidRootPart") then
+                local Split1 = string.split(tostring(v),"Lv")
+                local TempName = "DM NotOreoz On V3rm (Bug)"
+                for _1,v1 in next, Nums1 do 
+                    if string.find(tostring(Split1[#Split1]),v1) then
+                        if not string.find(tostring(v.Name),"000") then
+                            TempName = Split1[1]..string.gsub(Split1[#Split1],v1,"")..Nums2[_1]
+                            v.Name = TempName
+                        end
+                    end
+                end
+                table.insert(NPCTable, v.Name)
+            end
+        end
+        table.sort(NPCTable, function(a, s)
+            return tonumber(string.match(a, "%d+")) < tonumber(string.match(s, "%d+"))
+        end)
+        ThrowAwayTable = NPCTable
+        NPCTable = {}
+        AutoFarm_DROPDOWN:Refresh(ThrowAwayTable,true)
+    end
+end)
